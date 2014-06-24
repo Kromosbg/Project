@@ -34,7 +34,7 @@ class Test
 		shift = rand(6...8)
 		a = "orig | (insert << #{shift})"
 
-		code = "int orig = 0x#{orig.convert_num_to_string};\nint insert = 0x#{insert.convert_num_to_string};\nint a = #{a};\nprintf(\"%d\\n\", a);"
+		code = "#include <stdio.h>\nint main(){\n int orig = 0x#{orig.convert_num_to_string};\nint insert = 0x#{insert.convert_num_to_string};\nint a = #{a};\nprintf(\"%d\\n\", a);return 0;\n}"
 		
 		@creater.set_code(code)
 	end
@@ -52,7 +52,7 @@ class Test
 		operation = random_operation
 		result = "a #{operation} b"
 
-		code = "int orig = 0x#{orig.convert_num_to_string};\nint insert = 0x#{insert.convert_num_to_string};\nint a = #{a};\nint b = #{b};\nint result = #{result};\nprintf(\"%d\\n\", result);"
+		code = "#include <stdio.h>\nint main(){\nint orig = 0x#{orig.convert_num_to_string};\nint insert = 0x#{insert.convert_num_to_string};\nint a = #{a};\nint b = #{b};\nint result = #{result};\nprintf(\"%d\\n\", result);return 0;\n}"
 	
 		@creater.set_code(code)
 	end
@@ -63,7 +63,7 @@ class Test
 		random = rand(10)
 		operation = random_operation
 		left = "0x#{i.convert_num_to_string} #{operation} (1 << #{random})"
-		code = "int i = 0x#{i.convert_num_to_string};\nint left = #{left};\nprintf(\"%d\\n\", left);"
+		code = "int i = 0x#{i.convert_num_to_string};\nint left = #{left};\nprintf(\"%d\\n\", left);return 0;\n}"
 
 		@creater.set_code(code)
 	end
@@ -77,7 +77,7 @@ class Test
 		operation = random_operation
 		result = "(value1 << #{shift}) #{operation} (value2 >> #{shift2})"
 
-		code = "long value1 = 0x#{value1.convert_num_to_string};\nlong value2 = 0x#{value2.convert_num_to_string};\nlong result = #{result};\nprintf(\"%ld\\n\", result);"
+		code = "#include <stdio.h>\nint main(){\nlong value1 = 0x#{value1.convert_num_to_string};\nlong value2 = 0x#{value2.convert_num_to_string};\nlong result = #{result};\nprintf(\"%ld\\n\", result);return 0;\n}"
 
 		@creater.set_code(code)	
 	end
@@ -92,7 +92,7 @@ class Test
 		operation = random_operation
 
 		result = "(value1 << #{shift}) #{operation} (value2 >> #{shift})"
-		code = "int value1 = #{value1};\nint value2 = #{value2};\nint result = #{result};\nprintf(\"%d\\n\", result);"
+		code = "int value1 = #{value1};\nint value2 = #{value2};\nint result = #{result};\nprintf(\"%d\\n\", result);return 0;\n}"
 
 		@creater.set_code(code)
 	end
@@ -105,7 +105,7 @@ class Test
 		operation = random_operation
 		condition = "if(testValue #{operation} (1 << #{shift}))"
 
-		code = "long testValue = 0x#{testValue.convert_num_to_string};\nint a = 0;\n#{condition}{\na = 1;\n}else{\na = 2;\n}\nprintf(\"%d\\n\", a);"
+		code = "#include <stdio.h>\nint main(){\nlong testValue = 0x#{testValue.convert_num_to_string};\nint a = 0;\n#{condition}{\na = 1;\n}else{\na = 2;\n}\nprintf(\"%d\\n\", a);return 0;\n}"
 
 		@creater.set_code(code)
 	end
@@ -116,9 +116,9 @@ class Test
 
 		shift = rand(2..4)
 		operation = random_operation
-		condition = "if((result = testValue & testValue ^ testValue | (1 << #{shift})))"
+		condition = "#include <stdio.h>\nint main(){\nif((result = testValue & testValue ^ testValue | (1 << #{shift}))) return 0;\n}"
 
-		code = "long testValue = 0x#{testValue.convert_num_to_string};\nint a = 0;\nint result = 0;\n#{condition}{\na = 1;\n}else{\na = 2;\n}\nprintf(\"%d\\n\", a);"
+		code = "#include <stdio.h>\nint main(){\nlong testValue = 0x#{testValue.convert_num_to_string};\nint a = 0;\nint result = 0;\n#{condition}{\na = 1;\n}else{\na = 2;\n}\nprintf(\"%d\\n\", a);return 0;\n}"
 
 		@creater.set_code(code)
 	end
